@@ -1,13 +1,10 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 
-const {Shapes, Square, Circle, Triangle} = require('./lib/shapes');
-const circle = new shapes.Circle();
-const square = new shapes.Square();
-const triangle = new shapes.Triangle();
+const { Square, Circle, Triangle} = require('./lib/shapes');
 
 
-
+// create a array of object questions for the user input
 const questions = [
     {
       type: 'list',
@@ -25,7 +22,14 @@ const questions = [
       type: 'input',
       name: 'text',
       message: 'What text would be found in your logo?',
-      default: 'TradeMark'
+      validate:(answer)=>{
+        if(answer.length > 3){
+          return 'Too Long, Max 3 characters!'
+        }else{
+          return true
+        }
+      },
+      default: 'APP'
     },
     {
         type: 'list',
@@ -36,14 +40,45 @@ const questions = [
       }
   ];
 
+  // call in inquirer to generate the questions in the terminal
   inquirer.prompt(questions).then(answers => {
-    const { shape, shapeColor, text, textColor } = answers;
+    // const { shapeColor, text, textColor } = answers;
+    const {shape, shapeColor, text, textColor} = answers;
+    let SVGstring = '';
+    if (shape === 'square'){
+
+      const square = new Square();
+      square.setColor(shapeColor);
+      square.setText(text);
+      square.setTextColor(textColor);
+      SVGstring = square.openSVG() + square.render() + square.renderText() + square.closeSVG();
+      console.log(SVGstring);
+
+// console.log(square.render());
+    } else if ( shape === "triangle"){
+      const triangle = new Triangle();
+      triangle.setColor(shapeColor);
+      triangle.setText(text);
+      triangle.setTextColor(textColor);
+      SVGstring = triangle.openSVG() + triangle.render() + triangle.renderText() + triangle.closeSVG();
+
+      console.log(SVGstring);
+    } else {
+      const circle = new Circle();
+      circle.setColor(shapeColor);
+      circle.setText(text);
+      circle.setTextColor(textColor)
+
+      SVGstring = circle.openSVG() + circle.render() + circle.renderText() + circle.closeSVG();
+      console.log(SVGstring);
+    }
+ 
   
     // Generate the SVG markup based on the user's input
-    const svgCreator = generateSVG(shape, shapeColor, text, textColor);
+    // const svgCreator = generateSVG(shape, shapeColor, text, textColor);
   
     // Save the SVG markup to a file
-    fs.writeFile('logo.svg', svgCreator, (err) => {
+    fs.writeFile('logo.svg', SVGstring, (err) => {
       if (err) { throw err;     
       } else {
         console.log('Logo Saved!!!');
