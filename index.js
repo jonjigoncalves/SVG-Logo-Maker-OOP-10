@@ -1,6 +1,12 @@
 const fs = require('fs');
 const inquirer = require('inquirer');
 
+const {Shapes, Square, Circle, Triangle} = require('./lib/shapes');
+const circle = new shapes.Circle();
+const square = new shapes.Square();
+const triangle = new shapes.Triangle();
+
+
 
 const questions = [
     {
