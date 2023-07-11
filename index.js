@@ -78,7 +78,7 @@ const questions = [
     // const svgCreator = generateSVG(shape, shapeColor, text, textColor);
   
     // Save the SVG markup to a file
-    fs.writeFile('logo.svg', SVGstring, (err) => {
+    fs.writeFile('./examples/logo.svg', SVGstring, (err) => {
       if (err) { throw err;     
       } else {
         console.log('Logo Saved!!!');
